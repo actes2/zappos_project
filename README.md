@@ -32,11 +32,14 @@ _____
         * deploy_ECS.py
         * deploy_Docker.py
         * start_Server.py
-        *   -> static
-        *   -> static -> styles.css
-        *   -> static -> scripts.js
-        *   -> templates
-        *   -> templates -> index.html
+        *   ~~-> static~~
+        *   ~~-> static -> styles.css~~
+        *   ~~-> static -> scripts.js~~
+        *   ~~-> templates~~
+        *   ~~-> templates -> index.html~~
+        *   -> templates -> login.html
+        *   -> templates -> admin.html
+        *   -> templates -> register.html
   
   * Fullfill the basic requirements:
       - Make a webpage - leverage bootstrap for the stylization

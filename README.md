@@ -37,11 +37,11 @@ _____
         *   ~~-> static -> scripts.js~~
         *   ~~-> templates~~
         *   ~~-> templates -> index.html~~
-        *   -> templates -> login.html
-        *   -> templates -> admin.html
-        *   -> templates -> register.html
+        *   ~~-> templates -> login.html~~
+        *   ~~-> templates -> admin.html~~
+        *   ~~-> templates -> register.html~~
   
-  * Fullfill the basic requirements:
+  * Fulfill the basic requirements:
       - Make a webpage - leverage bootstrap for the stylization
       - Pull elements from our DynamoDB table into an element
       - User Authentication (Simple) login/logout
@@ -52,8 +52,8 @@ _____
   * Get SAML up and running. (Maybe we'll keep the simple login for easy Admin Access in this context)
     
   * Dockerize/containerize our application!
-      - Make a ubuntu container that hands off installs everything we need to run our application (including deps)!
-      - To make it more convient pipe and source our configuration from this public repo!
+      - Make an ubuntu container that hands off installs everything we need to run our application (including deps)!
+      - To make it more convenient pipe and source our configuration from this public repo!
       - Include a start-up BASH script that assembles our server configurations, creates our locations for things and executes on-run-time with PORT params with the default value being 80 (Most relevant)
       - Passthrough PORT through localhost:PORT in our configuration so that even on localized systems this container leverages the hosts network
   * Deployment script for docker

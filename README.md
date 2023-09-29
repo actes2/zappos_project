@@ -25,7 +25,7 @@ _____
     > Leverage the python script included for: "Deploy_ECS.py"
   - Standard deployment
     > On any device leverage the "start_Server.py" to automatically host the server off port: 80 on your current device.
-# To-do (Hopefully this will all be striked out upon completion)
+# To-do (Hopefully this will all be struck out upon completion)
 
   * Create our structure "off the bat" for a good layout.
       - Assemble:

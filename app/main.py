@@ -34,7 +34,7 @@ def login():
         if acc:
             print(f"{email} exists!")
 
-            if check_password(pwd):
+            if check_password(pwd, acc[2]):
                 print("Successful password validation!")
                 print(f"{email} is good to login!")
                 # ToDo: Stuff here now that we successfully logged in with our encrypted password stored on the database
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     load_dotenv()
 
-    key = encrypt_password(os.getenv("session_key"), b"A dash of Salt and Pepper is all you need!")
+    key = encrypt_password(os.getenv("session_key"), "A dash of Salt and Pepper is all you need!")
 
     app.config['SECRET_KEY'] = str(key)
     app.run("0.0.0.0", port=80, debug=True)

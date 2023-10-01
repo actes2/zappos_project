@@ -1,15 +1,17 @@
 import bcrypt
 
 
-def encrypt_password(password, pepper=b"duck"):
-    salted_pwd = password.encode("utf-8") + pepper
-    return bcrypt.hashpw(salted_pwd, bcrypt.gensalt())
+def encrypt_password(password, pepper="duck"):
+    peppered_pwd = (password + pepper).encode("utf-8")
+    return bcrypt.hashpw(peppered_pwd, bcrypt.gensalt())
 
 
-def check_password(password):
-    enc_pass = encrypt_password(password)
+def check_password(password, hash_passwd, pepper="duck"):
 
-    bcrypt.checkpw()
-    if password == enc_pass:
+    peppered_pwd = (password + pepper).encode("utf-8")
+
+    result = bcrypt.checkpw(peppered_pwd, hash_passwd.encode('utf-8'))
+
+    if result:
         return True
     return False

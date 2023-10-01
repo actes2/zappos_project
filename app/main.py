@@ -2,7 +2,7 @@
 # TODO: Remember when publishing to swap from local network in the .env to public domain
 import os
 
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, session
 import requests as req
 import json
 import sql_queries
@@ -16,11 +16,21 @@ app = Flask(__name__, static_folder="static")
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if "user" in session:
+        usrname = session["user"]
+    else:
+        usrname = "none"
+
+    return render_template("index.html", username=usrname, curpage="hom-btn")
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    if "user" in session:
+        usrname = session["user"]
+    else:
+        usrname = "none"
+
     if request.method == "POST":
         usr_details = request.form
 
@@ -36,7 +46,10 @@ def login():
 
             if check_password(pwd, acc[2]):
                 print("Successful password validation!")
-                print(f"{email} is good to login!")
+                print(f"{email} is verified to log-in; saving session!")
+                session["user"] = email
+
+                return render_template("index.html", username=email, curpage="hom-btn")
                 # ToDo: Stuff here now that we successfully logged in with our encrypted password stored on the database
 
             else:
@@ -49,11 +62,16 @@ def login():
             flash("Username or Password were incorrect!")
             flash("If you've forgotten your password, reach out to an Database admin for further assistance.")
 
-    return render_template("login.html")
+    return render_template("login.html", username=usrname, curpage="log-btn")
 
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
+    if "user" in session:
+        usrname = session["user"]
+    else:
+        usrname = "none"
+
     if request.method == "POST":
         usr_details = request.form
 
@@ -64,30 +82,39 @@ def register():
         if sql_queries.check_for_sql_account(email):
             print("Account already exists")
             flash("Account already exists!")
-            return render_template("register.html")
+            return render_template("register.html", username=usrname, curpage="reg-btn")
         else:
             print("Creating an account!")
             sql_queries.make_new_sql_account(email, pwd)
-            return  render_template("login.html")
+            return  render_template("login.html", username=usrname, curpage="log-btn")
 
     # ToDo: Make a value pass through that denotes that we succeeded / failed to create an account.
-    return render_template("register.html")
+    return render_template("register.html", username=usrname, curpage="reg-btn")
 
 
 @app.route("/admin")
 def admin():
-    return render_template("admin.html")
+    if "user" in session:
+        return render_template("admin.html", username=session["user"], curpage="adm-btn")
+    return render_template("404.html")
 
 
-@app.route('/query_test', methods=["POST", "GET"])
-def query_test():
+@app.route('/query_self', methods=["POST", "GET"])
+def query_self():
     if request.method == "POST":
         print(f"Internal request! Here's our data: {request.data} \t here's our url: {request.base_url}")
 
-        data = str(request.data)
+        data = request.data.decode()
+        print(data)
+        # ToDo: change this from count to just literal
         if data.count("acquire-duck"):
             # Acquire an image of a duck.
+            print("here")
             return json.loads(req.request("GET", "https://random-d.uk/api/v2/random").text)["url"]
+        if data.count("logout"):
+            session["user"] = "none"
+            return "relog"
+
         return ""
 
 

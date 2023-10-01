@@ -11,15 +11,30 @@
 
     <script src="{{url_for('static', filename='script.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
+
 </head>
-<body class="primary_background">
+<body class="primary_background" onload="new DataTable('#example');">
     {% include 'navbar.html' %}
     <form style="max-width:880px margin:auto">
     <h1 class="text-center border m-1 p-1 steel_bg"> Welcome to Avery's Zappos Project Homepage! </h1>
 
         <div class="container mt-4">
             <div class="row text-center">
+
+                {% if username != "none" %}
+
+                <h2>Welcome {{username}}!</h2>
+
+                {% endif %}
+                {% if username == "none"  %}
+
                 <h2 id="logged_in">No user is currently logged in!</h2>
+                {% endif %}
+
+
             </div>
 
             <div class="row">
@@ -32,6 +47,88 @@
             <div class="row mt-5">
                 <div class="col">
                     <div id="filler" class="col text-center">Table here someday</div>
+                        <div>
+                            {% if username != "none" %}
+                            <table id="example" class="display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Key</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>test@gmail.com</td>
+                                        <td>#15158u18hf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>example@blah.com</td>
+                                        <td>5152346551</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>test@gmail.com</td>
+                                        <td>#15158u18hf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>example@blah.com</td>
+                                        <td>5152346551</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>test@gmail.com</td>
+                                        <td>#15158u18hf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>example@blah.com</td>
+                                        <td>5152346551</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>test@gmail.com</td>
+                                        <td>#15158u18hf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>example@blah.com</td>
+                                        <td>5152346551</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>test@gmail.com</td>
+                                        <td>#15158u18hf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>example@blah.com</td>
+                                        <td>5152346551</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>test@gmail.com</td>
+                                        <td>#15158u18hf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>example@blah.com</td>
+                                        <td>5152346551</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Key</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            {% endif %}
+                        </div>
                 </div>
             </div>
         </div>

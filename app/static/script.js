@@ -13,19 +13,16 @@ function query_Self_with_Ret(_index, _data, _ret="", _type="") {
                 else if (_type === "") console.log(xhttp.responseText);
 
             }
+            if (xhttp.responseText === "relog"){
+                window.location.href = '/';
+            }
+            return true;
         }
+        return false;
     };
 
     xhttp.open("POST", _index);
 
 
     xhttp.send(_data);
-}
-
-function query_Self(_index, _data) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    };
-    xhttp.open("POST", _index);
-    xhttp.send("Ahoy");
 }

@@ -1,19 +1,47 @@
+    <style>
+        .{{curpage}} {
+            color: rgb(96, 39, 232);
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .{{curpage}}:hover {
+            color: rgb(73, 31, 173);
+
+        }
+    </style>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Home</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+
             <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link hom-btn" href="/">Home</a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
+                <a class="nav-link log-btn" href="/login">Login</a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" href="/admin">Admin</a>
+                <a class="nav-link reg-btn" href="/register">Register</a>
             </li>
+
+            {% if username != "none" %}
+                <li class="nav-item">
+                    <a class="nav-link adm-btn" href="/admin">Admin</a>
+                </li>
+            {% endif %}
+
         </ul>
+
     </div>
+    {% if username != "none" %}
+        <button onclick="query_Self_with_Ret('query_self', 'logout');" type="button" class="btn btn-primary btn-floating p-1" style="margin-right: 20px; color: rgb(156, 43, 28); background-color: black;">
+            Logout
+        </button>
+    {% endif %}
 </nav>

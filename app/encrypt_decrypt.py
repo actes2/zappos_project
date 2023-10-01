@@ -6,5 +6,10 @@ def encrypt_password(password, pepper=b"duck"):
     return bcrypt.hashpw(salted_pwd, bcrypt.gensalt())
 
 
-def check_password(password, password_attempt):
-    pass
+def check_password(password):
+    enc_pass = encrypt_password(password)
+
+    bcrypt.checkpw()
+    if password == enc_pass:
+        return True
+    return False

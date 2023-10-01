@@ -19,7 +19,13 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-5" style="width: 900px; padding-top: 20%;">
                 <div class="card bg-dark text-white" style="border-radius: 2rem;">
                     <div class="card-body p-5 text-center">
-
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="notification is-danger" style="color: rgb(207, 159, 105); text-decoration: underline; animation-duration: 2s; animation-name: fade-in;">
+                                {{ messages[0] }}
+                            </div>
+                        {% endif %}
+                        {% endwith %}
                         <form action="/register" method="post" class="mb-md-8 mt-md-4">
 
                             <h2 class="fw-bold mb-2 text-uppercase">Register an account</h2>

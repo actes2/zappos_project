@@ -21,3 +21,13 @@
 .steel_bg {
     background: rgb(73, 81, 94);
 }
+
+
+@keyframes fade-in {
+
+    from {
+        color: rgb(33, 37, 41);
+    }
+    to{
+    }
+}

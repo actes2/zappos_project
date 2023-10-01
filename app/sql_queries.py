@@ -30,7 +30,7 @@ def change_sql_account(account):
 
 
 def make_new_sql_account(u_email, u_passwd):
-    e_pass = encrypt_password(u_passwd, b"zappos_reg")
+    e_pass = encrypt_password(u_passwd)
 
     acc = u_email, e_pass
 
@@ -45,6 +45,7 @@ def make_new_sql_account(u_email, u_passwd):
 
     cursor.execute("INSERT INTO accounts(username, password) VALUES (%s, %s)", acc)
 
+    conn.commit()
     cursor.close()
     conn.close()
 

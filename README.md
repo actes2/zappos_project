@@ -31,6 +31,7 @@ _____
         * deploy_ECS.py
         * deploy_Docker.py
         * start_Server.py
+        * ~~sql_queries.py~~
         * ~~populate_db.py~~
         * ~~encrypt_decrypt.py~~
         *   ~~-> static~~

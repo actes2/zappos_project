@@ -14,7 +14,6 @@ _____
 * Front-end:
     - Bootstrap CSS
     - Javascript
-    - AJAX
 * SAML Authentication
 * Fluid deployment
 
@@ -32,6 +31,8 @@ _____
         * deploy_ECS.py
         * deploy_Docker.py
         * start_Server.py
+        * ~~populate_db.py~~
+        * ~~encrypt_decrypt.py~~
         *   ~~-> static~~
         *   ~~-> static -> styles.css~~
         *   ~~-> static -> scripts.js~~
@@ -40,6 +41,7 @@ _____
         *   ~~-> templates -> login.html~~
         *   ~~-> templates -> admin.html~~
         *   ~~-> templates -> register.html~~
+        *   ~~-> templates -> navbar.html~~
   
   * Fulfill the basic requirements:
       - Make a webpage - leverage bootstrap for the stylization

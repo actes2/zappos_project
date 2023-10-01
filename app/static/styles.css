@@ -1,0 +1,23 @@
+.primary_background {
+    background: linear-gradient(90deg, rgba(32,32,32,1) 1%, rgba(3,3,57,1) 99%);
+    color: rgb(197, 205, 217);
+}
+
+.login_background{
+    background: linear-gradient(90deg, rgba(62,62,62,3) 10%, rgba(3,3,57,1) 75%);
+    color: rgb(197, 205, 217);
+}
+
+.register_background{
+    background: linear-gradient(90deg, rgba(3,3,57,1) 10%, rgba(62,62,62,3) 75%);
+    color: rgb(197, 205, 217);
+}
+
+.bold_underline {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.steel_bg {
+    background: rgb(73, 81, 94);
+}

@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request
 import requests as req
 import json
+import sql_queries
 
 app = Flask(__name__, static_folder="static")
 
@@ -21,6 +22,15 @@ def login():
         pwd = usr_details["password"]
         print(f"email is: {email}\npassword is: {pwd}")
 
+        acc = sql_queries.check_for_sql_account(email, "any")
+
+        if acc:
+            print(f"{email} exists!")
+            # ToDo: Login and create a proper session
+
+        else:
+            print(f"{email} does not exist!")
+
     return render_template("login.html")
 
 
@@ -32,8 +42,14 @@ def register():
         email = usr_details["email"]
         pwd = usr_details["password"]
         print(f"email is: {email}\npassword is: {pwd}")
-        # TODO: SELECT COUNT(1) to check if email already exists
 
+        if sql_queries.check_for_sql_account(email):
+            print("Account already exists")
+        else:
+            print("Creating an account!")
+            sql_queries.make_new_sql_account(email, pwd)
+
+    # ToDo: Make a value pass through that denotes that we succeeded / failed to create an account.
     return render_template("register.html")
 
 

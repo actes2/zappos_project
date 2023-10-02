@@ -15,7 +15,68 @@
 <body>
     {% include 'navbar.html' %}
 
-    <h1>Hello, world!</h1>
+    <form style="max-width:880px margin:auto">
+    <h1 class="text-center border m-1 p-1 steel_bg"> Welcome to Avery's Zappos Project Homepage! </h1>
+
+        <div class="container mt-4">
+            <div class="row text-center">
+
+                {% if username != "none" %}
+
+                <h2>Welcome {{username}}!</h2>
+
+                {% endif %}
+                {% if username == "none"  %}
+
+                <h2 id="logged_in">No user is currently logged in!</h2>
+                {% endif %}
+
+
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+
+
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col">
+                    <div id="filler" class="col text-center">Table here someday</div>
+                        <div>
+                            {% if username != "none" %}
+                            <table id="example" class="display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        {% for i in range(0, t_hcnt) %}
+                                            <th>{{t_headers[i]}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for x in range(0, t_icnt) %}
+                                    <tr>
+                                    {% for y in range(0, t_hcnt) %}
+
+                                        <td>{{t_items[x][y]}}</td>
+
+                                    {% endfor %}
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                            {% endif %}
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
 
 
 

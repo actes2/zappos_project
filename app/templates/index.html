@@ -18,6 +18,7 @@
 </head>
 <body class="primary_background" onload="new DataTable('#example');">
     {% include 'navbar.html' %}
+
     <form style="max-width:880px margin:auto">
     <h1 class="text-center border m-1 p-1 steel_bg"> Welcome to Avery's Zappos Project Homepage! </h1>
 
@@ -52,79 +53,25 @@
                             <table id="example" class="display" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Key</th>
-                                        <th>Username</th>
-                                        <th>Password</th>
+                                        {% for i in range(0, t_hcnt) %}
+                                            <th>{{t_headers[i]}}</th>
+                                        {% endfor %}
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                {% for x in range(0, t_icnt) %}
                                     <tr>
-                                        <td>25</td>
-                                        <td>test@gmail.com</td>
-                                        <td>#15158u18hf</td>
+                                    {% for y in range(0, t_hcnt) %}
+
+                                        <td>{{t_items[x][y]}}</td>
+
+                                    {% endfor %}
                                     </tr>
-                                    <tr>
-                                        <td>21</td>
-                                        <td>example@blah.com</td>
-                                        <td>5152346551</td>
-                                    </tr>
-                                    <tr>
-                                        <td>25</td>
-                                        <td>test@gmail.com</td>
-                                        <td>#15158u18hf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>21</td>
-                                        <td>example@blah.com</td>
-                                        <td>5152346551</td>
-                                    </tr>
-                                    <tr>
-                                        <td>25</td>
-                                        <td>test@gmail.com</td>
-                                        <td>#15158u18hf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>21</td>
-                                        <td>example@blah.com</td>
-                                        <td>5152346551</td>
-                                    </tr>
-                                    <tr>
-                                        <td>25</td>
-                                        <td>test@gmail.com</td>
-                                        <td>#15158u18hf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>21</td>
-                                        <td>example@blah.com</td>
-                                        <td>5152346551</td>
-                                    </tr>
-                                    <tr>
-                                        <td>25</td>
-                                        <td>test@gmail.com</td>
-                                        <td>#15158u18hf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>21</td>
-                                        <td>example@blah.com</td>
-                                        <td>5152346551</td>
-                                    </tr>
-                                    <tr>
-                                        <td>25</td>
-                                        <td>test@gmail.com</td>
-                                        <td>#15158u18hf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>21</td>
-                                        <td>example@blah.com</td>
-                                        <td>5152346551</td>
-                                    </tr>
+                                {% endfor %}
+
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <th>Key</th>
-                                        <th>Username</th>
-                                        <th>Password</th>
-                                    </tr>
                                 </tfoot>
                             </table>
                             {% endif %}

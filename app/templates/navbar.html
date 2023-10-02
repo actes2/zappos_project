@@ -21,7 +21,7 @@
             <li class="nav-item">
                 <a class="nav-link hom-btn" href="/">Home</a>
             </li>
-
+            {% if username == "none" %}
             <li class="nav-item">
                 <a class="nav-link log-btn" href="/login">Login</a>
             </li>
@@ -29,6 +29,7 @@
             <li class="nav-item">
                 <a class="nav-link reg-btn" href="/register">Register</a>
             </li>
+            {% endif %}
 
             {% if username != "none" %}
                 <li class="nav-item">

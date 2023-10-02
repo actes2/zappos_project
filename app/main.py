@@ -18,10 +18,27 @@ app = Flask(__name__, static_folder="static")
 def index():
     if "user" in session:
         usrname = session["user"]
+
+        table_info = sql_queries.get_table_headers_and_all_items()
+
+        table_headers = table_info[0]
+        table_list = table_info[1]
+
+        return render_template("index.html", username=usrname, curpage="hom-btn",
+                               t_icnt=len(table_list),
+                               t_items=table_list,
+                               t_hcnt=len(table_headers),
+                               t_headers=table_headers)
+
+
     else:
         usrname = "none"
 
-    return render_template("index.html", username=usrname, curpage="hom-btn")
+    return render_template("index.html", username=usrname, curpage="hom-btn",
+                           t_icnt=0,
+                           t_items=(0,0,0),
+                           t_hcnt=0,
+                           t_headers=(0,0,0))
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -49,8 +66,17 @@ def login():
                 print(f"{email} is verified to log-in; saving session!")
                 session["user"] = email
 
-                return render_template("index.html", username=email, curpage="hom-btn")
-                # ToDo: Stuff here now that we successfully logged in with our encrypted password stored on the database
+                table_info = sql_queries.get_table_headers_and_all_items()
+
+                table_headers = table_info[0]
+                table_list = table_info[1]
+
+                return render_template("index.html", username=usrname, curpage="hom-btn",
+                                       t_icnt=len(table_list),
+                                       t_items=table_list,
+                                       t_hcnt=len(table_headers),
+                                       t_headers=table_headers)
+
 
             else:
                 print("Invalid password!")

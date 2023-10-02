@@ -6,6 +6,28 @@ from encrypt_decrypt import encrypt_password
 load_dotenv()
 
 
+def get_table_headers_and_all_items():
+    conn = mysql.connector.connect(
+        user=os.getenv('sql_username'),
+        password=os.getenv('sql_pass'),
+        database=os.getenv("database"),
+        host=os.getenv("host")
+    )
+
+    cursor = conn.cursor()
+
+    # Remember immutability saves on security injection nightmares
+    cursor.execute("SELECT * FROM accounts")
+
+    headers = cursor.column_names
+    l_items = cursor.fetchall()
+
+    # print(headers)
+    # print(l_items)
+    cursor.close()
+    conn.close()
+
+    return headers, l_items
 def change_sql_account(account):
     # This function assumes that the tuple presented to it is a bi-product of an initial query (Key, Username, Password)
 

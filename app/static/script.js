@@ -1,3 +1,7 @@
+
+
+
+
 function query_Self_with_Ret(_index, _data, _ret="", _type="") {
     var xhttp = new XMLHttpRequest();
 
@@ -15,6 +19,12 @@ function query_Self_with_Ret(_index, _data, _ret="", _type="") {
             }
             if (xhttp.responseText === "relog"){
                 window.location.href = '/';
+            }
+            if (xhttp.responseText === "modSuccess"){
+                window.location.href = '/admin';
+            }
+            if (xhttp.responseText === "reload"){
+                window.location.href = '/admin';
             }
             return true;
         }

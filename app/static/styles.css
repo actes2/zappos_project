@@ -2,6 +2,10 @@
     background: linear-gradient(90deg, rgba(32,32,32,1) 1%, rgba(3,3,57,1) 99%);
     color: rgb(197, 205, 217);
 }
+.admin_background {
+    background: linear-gradient(90deg, rgba(32,32,32,1) 55%, rgba(27,38,124,1) 79%);
+    color: rgb(197, 220, 210);
+}
 
 .login_background{
     background: linear-gradient(90deg, rgba(62,62,62,3) 10%, rgba(3,3,57,1) 75%);

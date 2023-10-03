@@ -11,12 +11,9 @@ fake = Faker()
 
 
 def populate():
-
-
     for num in range(75):
         acc = generate_fluff()
         make_new_sql_account(acc[0], acc[1])
-
 
 
 def generate_fluff():

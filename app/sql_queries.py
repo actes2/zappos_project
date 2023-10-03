@@ -6,7 +6,34 @@ from encrypt_decrypt import encrypt_password
 load_dotenv()
 
 
-def get_table_headers_and_all_items():
+def grab_all_table_names_from_db():
+    conn = mysql.connector.connect(
+        user=os.getenv('sql_username'),
+        password=os.getenv('sql_pass'),
+        database=os.getenv("database"),
+        host=os.getenv("host")
+    )
+
+    cursor = conn.cursor()
+    sql_syntax = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
+
+    cursor.execute(sql_syntax)
+
+    table_names = cursor.fetchall()
+
+    table_names = [str(item) for item in table_names]
+
+    table_names = [item.replace("(", "") for item in table_names]
+    table_names = [item.replace(")", "") for item in table_names]
+    table_names = [item.replace("'", "") for item in table_names]
+    table_names = [item.replace(",", "") for item in table_names]
+
+    cursor.close()
+    conn.close()
+    return table_names
+
+
+def get_table_headers(table="accounts"):
     conn = mysql.connector.connect(
         user=os.getenv('sql_username'),
         password=os.getenv('sql_pass'),
@@ -17,7 +44,33 @@ def get_table_headers_and_all_items():
     cursor = conn.cursor()
 
     # Remember immutability saves on security injection nightmares
-    cursor.execute("SELECT * FROM accounts")
+    sql_syntax = "SELECT * FROM {}".format(table)
+    cursor.execute(sql_syntax)
+
+    headers = cursor.column_names
+    cursor.fetchall()
+
+    # print(headers)
+    # print(l_items)
+    cursor.close()
+    conn.close()
+
+    return headers
+
+
+def get_table_headers_and_all_items(table="accounts"):
+    conn = mysql.connector.connect(
+        user=os.getenv('sql_username'),
+        password=os.getenv('sql_pass'),
+        database=os.getenv("database"),
+        host=os.getenv("host")
+    )
+
+    cursor = conn.cursor()
+
+    # Remember immutability saves on security injection nightmares
+    sql_syntax = "SELECT * FROM {}".format(table)
+    cursor.execute(sql_syntax)
 
     headers = cursor.column_names
     l_items = cursor.fetchall()
@@ -28,7 +81,33 @@ def get_table_headers_and_all_items():
     conn.close()
 
     return headers, l_items
-def change_sql_account(account):
+
+
+def modify_sql_column(column, value, key, table="accounts"):
+
+    value_and_key = (value, key)
+
+    conn = mysql.connector.connect(
+        user=os.getenv('sql_username'),
+        password=os.getenv('sql_pass'),
+        database=os.getenv("database"),
+        host=os.getenv("host")
+    )
+
+    cursor = conn.cursor()
+
+    # Remember immutability saves on security injection nightmares
+    sql_syntax = "UPDATE {} SET {} = %s WHERE {} = %s;".format(table, column, table + ".key")
+
+    cursor.execute(sql_syntax, value_and_key)
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+
+def change_sql_account(account, acctable="accounts"):
     # This function assumes that the tuple presented to it is a bi-product of an initial query (Key, Username, Password)
 
     conn = mysql.connector.connect(
@@ -42,8 +121,9 @@ def change_sql_account(account):
 
     account = (account[1], account[2], account[0])
 
+    sql_syntax = "UPDATE {} SET `username` = %s, `password` = %s WHERE {} = %s".format(acctable, acctable + ".key")
     # Remember immutability saves on security injection nightmares
-    cursor.execute("UPDATE `accounts` SET `username` = %s, `password` = %s WHERE accounts.key = %s", account)
+    cursor.execute(sql_syntax, account)
 
     conn.commit()
 
@@ -51,7 +131,45 @@ def change_sql_account(account):
     conn.close()
 
 
-def make_new_sql_account(u_email, u_passwd):
+def make_new_sql_entry(headers, values, table="accounts"):
+    conn = mysql.connector.connect(
+        user=os.getenv('sql_username'),
+        password=os.getenv('sql_pass'),
+        database=os.getenv("database"),
+        host=os.getenv("host")
+    )
+
+    cursor = conn.cursor()
+
+    sql_syntax = "INSERT INTO {}("
+    columns_syntax = ""
+    values_syntax = "VALUES ("
+
+    # "{}, {}) VALUES (%s, %s)"
+    for x in range(0, len(headers)):
+        if x < len(headers) - 1:
+            columns_syntax = columns_syntax + "{}, "
+        else:
+            columns_syntax = columns_syntax + "{}) "
+    for x in range(0, len(values)):
+        if x < len(values) - 1:
+            values_syntax = values_syntax + "%s, "
+        else:
+            values_syntax = values_syntax + "%s)"
+
+    sql_syntax = sql_syntax + columns_syntax + values_syntax
+    # print(sql_syntax)
+    sql_syntax = sql_syntax.format(table, *headers)
+    # print(sql_syntax)
+    cursor.execute(sql_syntax, values)
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+
+def make_new_sql_account(u_email, u_passwd, acctable="accounts"):
     e_pass = encrypt_password(u_passwd)
 
     acc = u_email, e_pass
@@ -65,14 +183,15 @@ def make_new_sql_account(u_email, u_passwd):
 
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO accounts(username, password) VALUES (%s, %s)", acc)
+    sql_syntax = "INSERT INTO {}(username, password) VALUES (%s, %s)".format(acctable)
+    cursor.execute(sql_syntax, acc)
 
     conn.commit()
     cursor.close()
     conn.close()
 
 
-def delete_sql_account(u_key):
+def delete_sql_table_item(u_key, table="accounts"):
     conn = mysql.connector.connect(
         user=os.getenv('sql_username'),
         password=os.getenv('sql_pass'),
@@ -82,8 +201,9 @@ def delete_sql_account(u_key):
 
     cursor = conn.cursor()
 
+    sql_syntax = "DELETE FROM {} WHERE {} = %s".format(table, table + ".key")
     # Remember immutability saves on security injection nightmares
-    cursor.execute("DELETE FROM accounts WHERE accounts.key = %s", (u_key,))
+    cursor.execute(sql_syntax, (u_key,))
 
     result = cursor.fetchall()
 
@@ -93,7 +213,7 @@ def delete_sql_account(u_key):
     conn.close()
 
 
-def check_for_sql_account(u_email, ret_t="bool"):
+def check_for_sql_account(u_email, ret_t="bool", acctable="accounts"):
     conn = mysql.connector.connect(
         user=os.getenv('sql_username'),
         password=os.getenv('sql_pass'),
@@ -103,8 +223,9 @@ def check_for_sql_account(u_email, ret_t="bool"):
 
     cursor = conn.cursor()
 
+    sql_syntax = "SELECT `key`, `username`, `password` FROM {} WHERE username = %s".format(acctable)
     # Remember immutability saves on security injection nightmares
-    cursor.execute("SELECT `key`, `username`, `password` FROM accounts WHERE username = %s", (u_email,))
+    cursor.execute(sql_syntax, (u_email,))
 
     raw_result = cursor.fetchall()
 

@@ -4,26 +4,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Zappos: Admin</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" defer></script>
 
-    <script src="{{url_for('static', filename='script.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 </head>
-<body>
+<body class="admin_background" onload="createTable();">
     {% include 'navbar.html' %}
 
     <form style="max-width:880px margin:auto">
-    <h1 class="text-center border m-1 p-1 steel_bg"> Welcome to Avery's Zappos Project Homepage! </h1>
+    <h1 class="border text-center m-1 p-1 steel_bg"> Administrator Panel </h1>
+        <div class="col">
+            <div class="col" style="padding-top: 15px;">
+                Current Table: <input id="txt_curtable" type="text" placeholder="{{a_table}}">
+                <button class="btn btn-outline-primary bg-dark" type="button" onclick="swapTables();" style="margin-left: 5px;">Switch Table</button>
+
+                    <button class="dropdown mt-3 btn btn-secondary dropdown-toggle dropdown-toggle-split " style="margin-bottom: 15px;" aria-haspopup="true" data-toggle="dropdown" type="button" id="drop_down_btn" data-bs-toggle="dropdown"></button>
+                    <ul class="dropdown-menu" aria-labelledby="drop_down_btn">
+                        <li>
+                        {% for x in range(0, db_table_names_cnt) %}
+                            <a id="drp_btn_dynamic{{x}}" class="dropdown-item" onclick="dropButtonAction('drp_btn_dynamic{{x}}')">{{db_table_names[x]}}</a>
+                        {% endfor %}
+                        </li>
+
+                    </ul>
+
+            </div>
+        </div>
 
         <div class="container mt-4">
             <div class="row text-center">
 
                 {% if username != "none" %}
 
-                <h2>Welcome {{username}}!</h2>
+                <h2>Welcome {{usrname}}!</h2>
 
                 {% endif %}
                 {% if username == "none"  %}
@@ -35,20 +53,43 @@
             </div>
 
             <div class="row">
+
+                {% for i in range(0, t_hcnt) %}
                 <div class="col text-center">
 
+                    {% if t_headers[i] == "key" %}
+
+                        <div class="input-group mb-3">
+                            <input id="dynamic_mod_txt{{i}}" type="text" class="form-control" placeholder="{{t_headers[i]}}" aria-label="{{t_headers[i]}}" aria-describedby="basic-addon2" aria-disabled="true" disabled>
+                        </div>
+
+                    {% else %}
+                        <div class="input-group mb-3">
+                            <input id="dynamic_mod_txt{{i}}" type="text" class="form-control" placeholder="{{t_headers[i]}}" aria-label="{{t_headers[i]}}" aria-describedby="basic-addon2">
+                        </div>
+                    {% endif %}
 
                 </div>
+                {% endfor %}
+
+
+                <button class="btn btn-outline-secondary bg-dark" type="button" onclick="submitChangesToDB();">Submit Modification to DB</button>
+                <button class="btn btn-outline-secondary bg-dark mt-1" type="button" onclick="deleteFromDB();">Delete Record from DB</button>
+                <button class="btn btn-outline-secondary bg-dark mt-1" type="button" onclick="createNewRcDB();">Create new Record in the DB</button>
             </div>
+
+
 
             <div class="row mt-5">
                 <div class="col">
-                    <div id="filler" class="col text-center">Table here someday</div>
+
+                    <div id="filler" class="col text-center">Configure some fun buttons</div>
+
                         <div>
                             {% if username != "none" %}
-                            <table id="example" class="display" style="width:100%">
+                            <table id="table_reference" class="display" style="width:100%">
                                 <thead>
-                                    <tr>
+                                    <tr id="t_headref">
                                         {% for i in range(0, t_hcnt) %}
                                             <th>{{t_headers[i]}}</th>
                                         {% endfor %}
@@ -83,4 +124,13 @@
 
 
 </body>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" defer></script>
+<script src="{{url_for('static', filename='admin_script.js')}}"></script>
+<script src="{{url_for('static', filename='script.js')}}"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
+
 </html>

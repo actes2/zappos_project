@@ -6,13 +6,24 @@ from encrypt_decrypt import encrypt_password
 load_dotenv()
 
 
+def createConnection():
+    try:
+        conn = mysql.connector.connect(
+            user=os.getenv('sql_username'),
+            password=os.getenv('sql_pass'),
+            database=os.getenv("database"),
+            host=os.getenv("host")
+        )
+        return conn
+    except mysql.connector.InterfaceError as ex:
+        return None
+
+
 def grab_all_table_names_from_db():
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return []
+
 
     cursor = conn.cursor()
     sql_syntax = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
@@ -23,10 +34,8 @@ def grab_all_table_names_from_db():
 
     table_names = [str(item) for item in table_names]
 
-    table_names = [item.replace("(", "") for item in table_names]
-    table_names = [item.replace(")", "") for item in table_names]
-    table_names = [item.replace("'", "") for item in table_names]
-    table_names = [item.replace(",", "") for item in table_names]
+    for c in ["(", ")", "'", ","]:
+        table_names = [item.replace(c, "") for item in table_names]
 
     cursor.close()
     conn.close()
@@ -34,12 +43,9 @@ def grab_all_table_names_from_db():
 
 
 def get_table_headers(table="accounts"):
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return []
 
     cursor = conn.cursor()
 
@@ -59,12 +65,9 @@ def get_table_headers(table="accounts"):
 
 
 def get_table_headers_and_all_items(table="accounts"):
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return [], []
 
     cursor = conn.cursor()
 
@@ -84,15 +87,11 @@ def get_table_headers_and_all_items(table="accounts"):
 
 
 def modify_sql_column(column, value, key, table="accounts"):
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return
 
     value_and_key = (value, key)
-
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
 
     cursor = conn.cursor()
 
@@ -110,12 +109,9 @@ def modify_sql_column(column, value, key, table="accounts"):
 def change_sql_account(account, acctable="accounts"):
     # This function assumes that the tuple presented to it is a bi-product of an initial query (Key, Username, Password)
 
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return
 
     cursor = conn.cursor()
 
@@ -132,12 +128,9 @@ def change_sql_account(account, acctable="accounts"):
 
 
 def make_new_sql_entry(headers, values, table="accounts"):
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return
 
     cursor = conn.cursor()
 
@@ -170,16 +163,13 @@ def make_new_sql_entry(headers, values, table="accounts"):
 
 
 def make_new_sql_account(u_email, u_passwd, acctable="accounts"):
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return None
+
     e_pass = encrypt_password(u_passwd)
 
     acc = u_email, e_pass
-
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
 
     cursor = conn.cursor()
 
@@ -190,14 +180,13 @@ def make_new_sql_account(u_email, u_passwd, acctable="accounts"):
     cursor.close()
     conn.close()
 
+    return True
+
 
 def delete_sql_table_item(u_key, table="accounts"):
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return
 
     cursor = conn.cursor()
 
@@ -205,7 +194,7 @@ def delete_sql_table_item(u_key, table="accounts"):
     # Remember immutability saves on security injection nightmares
     cursor.execute(sql_syntax, (u_key,))
 
-    result = cursor.fetchall()
+    _ = cursor.fetchall()
 
     conn.commit()
 
@@ -213,13 +202,10 @@ def delete_sql_table_item(u_key, table="accounts"):
     conn.close()
 
 
-def check_for_sql_account(u_email, ret_t="bool", acctable="accounts"):
-    conn = mysql.connector.connect(
-        user=os.getenv('sql_username'),
-        password=os.getenv('sql_pass'),
-        database=os.getenv("database"),
-        host=os.getenv("host")
-    )
+def get_account_if_exists(u_email, acctable="accounts"):
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return None
 
     cursor = conn.cursor()
 
@@ -232,13 +218,8 @@ def check_for_sql_account(u_email, ret_t="bool", acctable="accounts"):
     conn.close()
     cursor.close()
     if len(raw_result) == 0:
-        return False
-
-    result = raw_result[0]
-
-    if ret_t == "bool":
-        return True
+        return 0
     else:
-        return result
+        return raw_result[0]
 
 

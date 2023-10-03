@@ -7,11 +7,5 @@ def encrypt_password(password, pepper="duck"):
 
 
 def check_password(password, hash_passwd, pepper="duck"):
-
     peppered_pwd = (password + pepper).encode("utf-8")
-
-    result = bcrypt.checkpw(peppered_pwd, hash_passwd.encode('utf-8'))
-
-    if result:
-        return True
-    return False
+    return bcrypt.checkpw(peppered_pwd, hash_passwd.encode('utf-8'))

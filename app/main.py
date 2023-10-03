@@ -99,6 +99,11 @@ def register():
 
         email = usr_details["email"]
         pwd = usr_details["password"]
+
+        if email.strip() == "" or pwd.strip() == "":
+            flash("Email or Password cannot be empty!")
+            return render_template("register.html", username=usrname, curpage="reg-btn")
+
         # print(f"email is: {email}\npassword is: {pwd}")
         check_for_acc = sql_queries.get_account_if_exists(email)
         if check_for_acc is None:

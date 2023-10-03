@@ -45,6 +45,10 @@ def login():
         email = usr_details["email"]
         pwd = usr_details["password"]
 
+        if email.strip() == "" or pwd.strip() == "":
+            flash("Email or Password cannot be empty!")
+            return render_template("login.html", username=usrname, curpage="log-btn")
+
         print(f"Login attempt by:{email}")
 
         acc = sql_queries.get_account_if_exists(email)

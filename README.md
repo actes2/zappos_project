@@ -18,6 +18,14 @@ _____
     - Javascript
     - Custom CSS stylizations in-line and sourced
     - Duck Image Generator hidden in non-session "/admin" attempts.
+    - pagination for each table: 10, 25, 50, 100 per page.
+    - Searchable and Filterable Datatable
+    - Unique gradients per page * It's cool to me *
+    - Dynamic CSS/HTML element population on a per page basis (If you open a table with 19 columns vs 3, the panel will automatically add those columns to your modification options)
+    - Reactive table for modifying data via onclick
+
+
+* Full support for performing CRUD based operations on any DB on the fly with a slick menu that supports swapping between all tables the account defined in .env has access to! *
 
 * Universally Deployable to any database (requires an 'accounts' table with 3 columns for 'key', 'username', 'password' on an SQL server)
 

@@ -8,16 +8,20 @@ _____
 # **Application Overview**
 * Backend:
     - *Flask* web framework
+    - Hand baked API for crosstalk between front and backend
+    - Multiple layers of security and encryption for session privatization and credential storage
     - Language: Python
-    - SAML
-    - DynamoDB cloud based replace for mysql database in this context
+    - ~~DynamoDB cloud~~ SQL/MySQL based
+    
 * Front-end:
     - Bootstrap CSS
     - Javascript
-* SAML Authentication
-* Fluid deployment
+    - Custom CSS stylizations in-line and sourced
+    - Duck Image Generator hidden in non-session "/admin" attempts.
 
-# Options for rapid deployment
+* Universally Deployable to any database (requires an 'accounts' table with 3 columns for 'key', 'username', 'password' on an SQL server)
+
+# Options for deployment
   - Docker
     > Leverage the python script included for "Deploy_Docker_container.py"
   - AWS CDK for ECS deployment
@@ -45,17 +49,17 @@ _____
         *   ~~-> templates -> navbar.html~~
   
   * Fulfill the basic requirements:
-      - Make a webpage - leverage bootstrap for the stylization
-      - Pull elements from our DynamoDB table into an element
-      - User Authentication (Simple) login/logout
-      - Write down all dependencies for future reference (containerization
+      - ~~Make a webpage - leverage bootstrap for the stylization~~
+      - ~~Pull elements from our MySql table into an element~~
+      - ~~User Authentication (Simple) login/logout~~ *note: definitely accidentally went full down the security rabbit hole and added a few methods for secure encryption for both sessions, user passwords, and literally any database column that reads "password". so that's cool.* 
+      - ~~Write down all dependencies for future reference (containerization)~~
 
-> *probably a coffee break somewhere in here!*
+> *probably ~~a~~ coffee break somewhere in here!* -> many coffees later
 
-  * Get SAML up and running. (Maybe we'll keep the simple login for easy Admin Access in this context)
+  - ~~Get SAML up and running. (Maybe we'll keep the simple login for easy Admin Access in this context)~~ * no saml or oauth due to lack of a familiar identity provider in this scenario ( If I had a private enterprise grade azure tenant or AWS instance that'd be a different story ) *
     
   * Dockerize/containerize our application!
-      - Make an ubuntu container that hands off installs everything we need to run our application (including deps)!
+      - Make an ubuntu container that 'hands off' installs everything we need to run our application (including deps)!
       - To make it more convenient pipe and source our configuration from this public repo!
       - Include a start-up BASH script that assembles our server configurations, creates our locations for things and executes on-run-time with PORT params with the default value being 80 (Most relevant)
       - Passthrough PORT through localhost:PORT in our configuration so that even on localized systems this container leverages the hosts network

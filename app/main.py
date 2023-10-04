@@ -1,5 +1,4 @@
 # Main server script
-# TODO: Remember when publishing to swap from local network in the .env to public domain
 import os
 
 from flask import Flask, render_template, request, flash, session

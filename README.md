@@ -47,9 +47,9 @@ Feel free to access it via:
 
 The database being leveraged in this instance is hosted on itself
 
-# Requirements for deployment (Manual Only)
+# Standard deployment and Requirements (Manual Only)
 
-To leverage the main.py, you will need to include a .env file in the root directory of the application.
+To utilize main.py, you will need to include a .env file in the root directory of the application.
 
 This .env file should contain the following environment variables:
 
@@ -61,20 +61,22 @@ DATABASE="Database name on above host here"
 SESSION_KEY="Anything here"
 ```
 
+Then run "main.py" to automatically host the server off port: 80 on your current device.
+     
+> Additionally, if you would like to use "populate_db.py" or create accounts: See `setup.sql` for database schema
+
 # Options for deployment
   - Docker
     > `docker build -t zappos .`
     
     > `docker run --name zappos-container -p 8080:80 -d zappos`
+    
+    > Open any web-browser and navigate to 127.0.0.1:8080 to view the application. 
   
     > If the container doesn't clean itself up on closing, leverage `docker stop zappos-container`, followed by a `docker rm zappos`
 
   - Standard deployment
-    > On any device leverage the "main.py" to automatically host the server off port: 80 on your current device.
-    
-    > Include app/.env with your customizations
-     
-    > See `setup.sql` for database schema
+
   
     > Be sure to `pip install -r requirements.txt` to properly obtain all the required dependencies!
 # To-do (Hopefully this will all be struck out upon completion)

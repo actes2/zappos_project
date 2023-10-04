@@ -1,1 +1,0 @@
-docker build ./ -t zappos_project_actes

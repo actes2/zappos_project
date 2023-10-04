@@ -9,10 +9,10 @@ load_dotenv()
 def createConnection():
     try:
         conn = mysql.connector.connect(
-            user=os.getenv('sql_username'),
-            password=os.getenv('sql_pass'),
-            database=os.getenv("database"),
-            host=os.getenv("host")
+            user=os.getenv('SQL_USERNAME'),
+            password=os.getenv('SQL_PASS'),
+            database=os.getenv("DATABASE"),
+            host=os.getenv("HOST")
         )
         return conn
     except mysql.connector.InterfaceError as ex:
@@ -160,6 +160,41 @@ def make_new_sql_entry(headers, values, table="accounts"):
 
     cursor.close()
     conn.close()
+
+
+def make_new_extra(data, table="extra"):
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return None
+
+    cursor = conn.cursor()
+
+    sql_syntax = "INSERT INTO {}(house_number, windows, doors, garages, floors, town, age) VALUES (%s, %s, %s, %s, %s, %s, %s)".format(table)
+
+    cursor.execute(sql_syntax, data)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return True
+
+
+def make_new_details(data, table="details"):
+    conn = createConnection()
+    if conn is None or not conn.is_connected():
+        return None
+
+    cursor = conn.cursor()
+
+    sql_syntax = "INSERT INTO {}(location, company, dogs) VALUES (%s, %s, %s)".format(table)
+    cursor.execute(sql_syntax, data)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return True
 
 
 def make_new_sql_account(u_email, u_passwd, acctable="accounts"):

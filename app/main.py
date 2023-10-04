@@ -52,7 +52,7 @@ def login():
         print(f"Login attempt by:{email}")
 
         acc = sql_queries.get_account_if_exists(email)
-        if acc is None:
+        if acc is None or acc == 0:
             print(f"{email} does not exist!")
             flash("Username or Password is incorrect!")
             flash("If you've forgotten your password, reach out to a Database Admin for assistance.")
@@ -247,7 +247,7 @@ if __name__ == "__main__":
 
     load_dotenv()
 
-    key = encrypt_password(os.getenv("session_key"), "A dash of Salt and Pepper is all you need!")
+    key = encrypt_password(os.getenv("SESSION_KEY"), "A dash of Salt and Pepper is all you need!")
 
     app.config['SECRET_KEY'] = str(key)
     app.run("0.0.0.0", port=80, debug=True)

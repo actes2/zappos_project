@@ -4,6 +4,13 @@
 This repo *exists entirely* for the purpose of the Zappos Take Home interview Challenge 
 
 _____
+# Post Production Notes
+This project was an absolute blast as a whole, I got to utilize and leverage many different skills, experiences, and knowledge in a way that I don't really get a good excuse to do. So for busy work, it 100% scratched my creative itch.
+
+I definitely plan on leveraging a "version" of this for my own lab as it's quite a neat little tool.
+
+Aside from that, I am proud of how the whole thing came together towards the end and believe that this is a good reflection of my skill-sets.
+
 
 # **Application Overview**
 * Backend:
@@ -16,12 +23,12 @@ _____
 * Front-end:
     - Bootstrap CSS
     - Javascript
-    - Custom CSS stylizations in-line and sourced
-    - Duck Image Generator hidden in non-session "/admin" attempts.
+    - Custom CSS stylization's in-line and sourced
+    - Duck Image Generator hidden in non-session "/admin" attempts. See: 
     - pagination for each table: 10, 25, 50, 100 per page.
     - Searchable and Filterable Datatable
-    - Unique gradients per page * It's cool to me *
-    - Dynamic CSS/HTML element population on a per page basis (If you open a table with 19 columns vs 3, the panel will automatically add those columns to your modification options)
+    - Unique gradients per page *It's cool to me*
+    - Dynamic CSS/HTML element population on a per-page basis (If you open a table with 19 columns vs 3, the panel will automatically add those columns to your modification options)
     - Reactive table for modifying data via onclick
 
 
@@ -29,20 +36,53 @@ _____
 
 * Universally Deployable to any database (requires an 'accounts' table with 3 columns for 'key', 'username', 'password' on an SQL server)
 
+# Access a Live Cloud Demo on the web! (Hosted via an AWS EC2 Instance)
+
+**As of 10/3/2023**
+
+I've gone ahead and hosted the application in its own EC2 instance on the cloud:
+Feel free to access it via: 
+
+### http://52.32.184.217/
+
+The database being leveraged in this instance is hosted on itself
+
+# Requirements for deployment (Manual Only)
+
+To leverage the main.py, you will need to include a .env file in the root directory of the application.
+
+This .env file should contain the following environment variables:
+
+```
+SQL_USERNAME="SQL Username here*"
+SQL_PASS="SQL Password here"
+HOST="Hostname here"
+DATABASE="Database name on above host here"
+SESSION_KEY="Anything here"
+```
+
 # Options for deployment
   - Docker
-    > Leverage the python script included for "Deploy_Docker_container.py"
-  - AWS CDK for ECS deployment
-    > Leverage the python script included for: "Deploy_ECS.py"
+    > `docker build -t zappos .`
+    
+    > `docker run --name zappos-container -p 8080:80 -d zappos`
+  
+    > If the container doesn't clean itself up on closing, leverage `docker stop zappos-container`, followed by a `docker rm zappos`
+
   - Standard deployment
-    > On any device leverage the "start_Server.py" to automatically host the server off port: 80 on your current device.
+    > On any device leverage the "main.py" to automatically host the server off port: 80 on your current device.
+    
+    > Include app/.env with your customizations
+     
+    > See `setup.sql` for database schema
+  
+    > Be sure to `pip install -r requirements.txt` to properly obtain all the required dependencies!
 # To-do (Hopefully this will all be struck out upon completion)
 
   * Create our structure "off the bat" for a good layout.
       - Assemble:
-        * deploy_ECS.py
-        * deploy_Docker.py
-        * start_Server.py
+        * ~~main.py~~
+        * ~~start/build docker scripts~~
         * ~~sql_queries.py~~
         * ~~populate_db.py~~
         * ~~encrypt_decrypt.py~~
@@ -64,16 +104,16 @@ _____
 
 > *probably ~~a~~ coffee break somewhere in here!* -> many coffees later
 
-  - ~~Get SAML up and running. (Maybe we'll keep the simple login for easy Admin Access in this context)~~ * no saml or oauth due to lack of a familiar identity provider in this scenario ( If I had a private enterprise grade azure tenant or AWS instance that'd be a different story ) *
+  - ~~Get SAML up and running. (Maybe we'll keep the simple login for easy Admin Access in this context)~~ * no saml or oauth due to lack of a familiar third-party identity provider in this scenario ( If I had a private enterprise grade azure tenant or AWS instance that'd be a different story ) *
     
-  * Dockerize/containerize our application!
-      - Make an ubuntu container that 'hands off' installs everything we need to run our application (including deps)!
-      - To make it more convenient pipe and source our configuration from this public repo!
-      - Include a start-up BASH script that assembles our server configurations, creates our locations for things and executes on-run-time with PORT params with the default value being 80 (Most relevant)
-      - Passthrough PORT through localhost:PORT in our configuration so that even on localized systems this container leverages the hosts network
-  * Deployment script for docker
+  * ~~Dockerize/containerize our application!~~
+      - ~~Make an ubuntu container that 'hands off' installs everything we need to run our application (including deps)!~~
+      - ~~To make it more convenient pipe and source our configuration from this public repo!~~
+      - ~~Include a start-up BASH script that assembles our server configurations, creates our locations for things and executes on-run-time with PORT params with the default value being 80 (Most relevant)~~
+      - ~~Passthrough PORT through localhost:PORT in our configuration so that even on localized systems this container leverages the hosts network~~
+  * ~~Deployment script for docker~~
     
-  * AWS CDK deployment script
-      - Begin construction on the AWS CDK deployment script post Docker Container assembly due to this part being marginally easier with the precursor reference.
-      - Have our script automatically deploy a ECS container/instance
+  * ~~AWS CDK deployment script~~ -> Due to time constraints this part of the project had to be cut; that said I did still deploy the application to its own EC2 instance which is similar without auto-deployment.
+      - ~~Begin construction on the AWS CDK deployment script post Docker Container assembly due to this part being marginally easier with the precursor reference.~~
+      - ~~Have our script automatically deploy a ECS container/instance~~
   

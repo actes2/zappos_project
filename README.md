@@ -43,7 +43,7 @@ Aside from that, I am proud of how the whole thing came together towards the end
 I've gone ahead and hosted the application in its own EC2 instance on the cloud:
 Feel free to access it via: 
 
-### http://52.40.229.54/
+### [http://52.40.229.54/](http://actesco.org/zappos/)
 
 The database being leveraged in this instance is hosted on itself
 
